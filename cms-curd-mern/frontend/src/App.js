@@ -1,10 +1,10 @@
 import React, {useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import Header from './components/layout/Header';
-import Home from './components/pages/Home';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
+import Header from './components/layout/header';
+import Home from './components/pages/home';
+import Register from './components/auth/register';
+import Login from './components/auth/login';
 import UserContext from './context/userContext';
 import './App.css';
 

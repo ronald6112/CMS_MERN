@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/userContext";
-import ErrorNotice from "../misc/ErrorNotice";
+import ErrorNotice from "../misc/errorNotice";
 
 function Login() {
   const [emailaddress, setEmailaddress] = useState();
