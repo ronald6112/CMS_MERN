@@ -7,6 +7,6 @@ We have two part in this project,
 ## frontend
 
 
-backend consists MongoDB and Express, you can find more details under this forlder.
+backend consists MongoDB and Express, you can find more details under this folder.
 
-frontend consists React and it is a declarative, efficient, and flexible JavaScript library for building user interfaces. You can find more details under this forlder.
+frontend consists React and it is a declarative, efficient, and flexible JavaScript library for building user interfaces. You can find more details under this folder.
