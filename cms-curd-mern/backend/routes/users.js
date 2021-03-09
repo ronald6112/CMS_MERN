@@ -54,128 +54,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Add User
-router.post("/add", auth, async (req, res) => {
-  try {
-    let {
-      name,
-      emailaddress,
-      password,
-      passwordCheck,
-      status,
-      createdBy,
-    } = req.body;
-    // validate
-    if (!name || !emailaddress || !password || !passwordCheck) {
-      return res.status(400).json({ msg: "Not all fields have been entered." });
-    }
-    if (password.length < 5) {
-      return res
-        .status(400)
-        .json({ msg: "The password needs to be at least 5 characters long." });
-    }
-    if (password !== passwordCheck) {
-      return res
-        .status(400)
-        .json({ msg: "Enter the same password twice for verification." });
-    }
-    const existingUser = await Users.findOne({ emailaddress: emailaddress });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ msg: "A user with this emailaddress already exists." });
-    }
-
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-    const newUser = new Users({
-      name,
-      email,
-      password: passwordHash,
-      status,
-      createdBy,
-    });
-
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-//Get All Users
-router.route("/").get((req, res) => {
-  Users.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-//Get user  By Id
-router.route("/:id").get((req, res) => {
-  Users.findById(req.params.id)
-    .then((user) => res.json(user))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-// Add User
-router.post("/add", auth, async (req, res) => {
-  try {
-    let {
-      name,
-      emailaddress,
-      password,
-      passwordCheck,
-      status,
-      createdBy,
-    } = req.body;
-    // validate
-    if (!name || !email || !password || !passwordCheck) {
-      return res.status(400).json({ msg: "Not all fields have been entered." });
-    }
-    if (password.length < 5) {
-      return res
-        .status(400)
-        .json({ msg: "The password needs to be at least 5 characters long." });
-    }
-    if (password !== passwordCheck) {
-      return res
-        .status(400)
-        .json({ msg: "Enter the same password twice for verification." });
-    }
-    const existingUser = await Users.findOne({ emailaddress: emailaddress });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ msg: "A user with this emailaddress already exists." });
-    }
-
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-    const newUser = new Users({
-      name,
-      emailaddress,
-      password: passwordHash,
-      status,
-      createdBy,
-    });
-
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Delete
-router.delete("/delete", auth, async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.user);
-    res.json(deletedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // Login
 router.post("/login", async (req, res) => {
   try {
@@ -236,5 +114,135 @@ router.post("/tokenIsValid", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Add User
+router.post("/add", auth, async (req, res) => {
+  try {
+    let {
+      name,
+      emailaddress,
+      password,
+      passwordCheck,
+      status,
+      createdBy,
+    } = req.body;
+    // validate
+    if (!name || !emailaddress || !password || !passwordCheck) {
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+    }
+    if (password.length < 5) {
+      return res
+        .status(400)
+        .json({ msg: "The password needs to be at least 5 characters long." });
+    }
+    if (password !== passwordCheck) {
+      return res
+        .status(400)
+        .json({ msg: "Enter the same password twice for verification." });
+    }
+    const existingUser = await Users.findOne({ emailaddress: emailaddress });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ msg: "A user with this emailaddress already exists." });
+    }
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    const newUser = new Users({
+      name,
+      emailaddress,
+      password: passwordHash,
+      status,
+      createdBy,
+    });
+
+    const savedUser = await newUser.save();
+    res.json(savedUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//Get All Users
+router.get("/", auth, async (req, res) => {
+  Users.find()
+    .then((users) => res.json(users))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Get user  By Id
+router.get("/:id", auth, async (req, res) => {
+  Users.findById(req.params.id)
+    .then((user) => res.json(user))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+// Delete
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    await Users.findByIdAndDelete(req.user);
+    res.json('User deleted!')
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// update User
+router.post("/update/:id", auth, async (req, res) => {
+  try {
+    let {
+      name,
+      emailaddress,
+      password,
+      passwordCheck,
+      status,
+      createdBy,
+    } = req.body;
+
+    if (!name || !emailaddress || !password || !passwordCheck) {
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+    }
+    if (password.length < 5) {
+      return res
+        .status(400)
+        .json({ msg: "The password needs to be at least 5 characters long." });
+    }
+    if (password !== passwordCheck) {
+      return res
+        .status(400)
+        .json({ msg: "Enter the same password twice for verification." });
+    }
+    // const existingUser = await Users.find({ emailaddress: emailaddress, _id: {$ne :id } });
+    // if (existingUser) {
+    //   return res
+    //     .status(400)
+    //     .json({ msg: "A user with this emailaddress already exists." });
+    // }
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    
+    Users.findById(req.params.id)
+    .then(user => {
+      user.name = name;
+      user.emailaddress = emailaddress;
+      user.status = status;
+      user.password = passwordHash;
+      user.updatedBy = createdBy;
+
+      user.save()
+        .then(() => res.json('User updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
 
 module.exports = router;

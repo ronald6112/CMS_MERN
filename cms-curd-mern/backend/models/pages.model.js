@@ -6,6 +6,7 @@ const pagesSchema = new mongoose.Schema(
     content: { type: String, required: true },
     keywords: { type: Array },
     createdBy: { type: String },
+    updatedBy: { type: String },
   },
   {
     timestamps: true,

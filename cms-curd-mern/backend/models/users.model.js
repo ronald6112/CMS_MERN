@@ -7,6 +7,7 @@ const usersSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 5 },
     status: { type: Boolean },
     createdBy: { type: String },
+    updatedBy: { type: String },
   },
   {
     timestamps: true,

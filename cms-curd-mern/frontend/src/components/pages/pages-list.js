@@ -5,16 +5,16 @@ import axios from "axios";
 import ErrorNotice from "../misc/errorNotice";
 import UserContext from "../../context/userContext";
 
-const Users = (props) => (
+const Pages = (props) => (
   <tr>
-    <td>{props.user.name}</td>
-    <td>{props.user.emailaddress}</td>
-    <td>{props.user.status ? 'Active' : 'Inactive'}</td>
+    <td>{props.page.title}</td>
+    <td>{props.page.content}</td>
+    <td>{props.page.keywords}</td>
     <td>
-      <Link to={"/edituser/" + props.user._id}>edit</Link> |{" "}
+      <Link to={"/editpage/" + props.page._id}>edit</Link> |{" "}
       <a href="javascript:void(0);"
         onClick={() => {
-          props.deleteUser(props.user._id);
+          props.deletePage(props.page._id);
         }}
       >
         delete
@@ -23,9 +23,9 @@ const Users = (props) => (
   </tr>
 );
 
-function UsersList() {
+function PagesList() {
   const [error, setError] = useState();
-  const [users, setUsers] = useState([]);
+  const [pages, setPages] = useState([]);
 
   const { userData } = useContext(UserContext);
   const history = useHistory();
@@ -35,64 +35,64 @@ function UsersList() {
       history.push("/login");
     }
 
-    getUsers();
+    getPages();
   }, []);
 
-  const getUsers = async () => {
+  const getPages = async () => {
     axios
-      .get("http://localhost:5000/users/", {
+      .get("http://localhost:5000/pages/", {
         headers: { "x-auth-token": userData.token },
       })
       .then((response) => {
-        setUsers(response.data);
+        setPages(response.data);
       })
       .catch((err) => {
         err && setError(err);
       });
   };
 
-  const usersList = () => {
-    return users.map((currentuser,index) => {
+  const pagesList = () => {
+    return pages.map((currentpage) => {
       return (
-        <Users
-          user={currentuser}
-          deleteUser={deleteUsers}
-          key={currentuser._id}
+        <Pages
+          page={currentpage}
+          deletePage={deletePages}
+          key={currentpage._id}
         />
       );
     });
   };
 
-  const deleteUsers = (id) => {
+  const deletePages = (id) => {
     axios
-      .delete("http://localhost:5000/users/" + id, {
+      .delete("http://localhost:5000/pages/" + id, {
         headers: { "x-auth-token": userData.token },
       })
       .then((response) => {
         setError(response.data);
       });
 
-    setUsers(users.filter((el) => el._id !== id));
+    setPages(pages.filter((el) => el._id !== id));
   };
 
   return (
     <div>
-      <h3>User List</h3>
+      <h3>Page List</h3>
       {error && (
         <ErrorNotice message={error} clearError={() => setError(undefined)} />
       )}
       <table className="table">
         <thead className="thead-light">
           <tr>
-            <th>Name</th>
-            <th>Emailaddress</th>
-            <th>Status</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Keywords</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.length > 0
-            ? usersList()
+          {pages.length > 0
+            ? pagesList()
             : ""}
         </tbody>
       </table>
@@ -100,4 +100,4 @@ function UsersList() {
   );
 }
 
-export default UsersList;
+export default PagesList;

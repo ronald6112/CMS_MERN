@@ -6,6 +6,9 @@ import Home from './components/pages/home';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
 import UserContext from './context/userContext';
+import Pages from './components/pages/pages-list';
+import CreatePage from './components/pages/create-page';
+import CreateUser from './components/pages/create-user';
 import './App.css';
 
 function App() {
@@ -27,7 +30,7 @@ function App() {
           headers: { "x-auth-token": token },
         });
         setUserData({
-          token,
+          token:token,
           user: userRes.data,
         });
       }
@@ -44,6 +47,10 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/pages" component={Pages} />
+          <Route path="/createuser" component={CreateUser} />
+          <Route path="/edituser/:id" component={CreateUser} />
+          <Route path="/createpage" component={CreatePage} />
         </Switch>
         </UserContext.Provider>
     </BrowserRouter>

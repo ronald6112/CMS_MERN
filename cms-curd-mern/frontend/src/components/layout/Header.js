@@ -1,17 +1,36 @@
-import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import AuthOptions from '../auth/authOptions';
+import React from "react";
+import { Link } from "react-router-dom";
+import AuthOptions from "../auth/authOptions";
 
-class Header extends Component {
-   
-    render() { 
-        return ( 
-            <header className="header">
-                <Link to="/"><h1 className="title">CMS MERN</h1></Link>
-                <AuthOptions />
-            </header>
-         );
-    }
+function Header() {
+
+    return (
+      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+        <Link to="/" className="navbar-brand">
+          CMS MERN
+        </Link>
+        <div className="collpase navbar-collapse">
+          <ul className="navbar-nav mr-auto">
+            <li className="navbar-item">
+              <Link to="/pages" className="nav-link">
+                Pages
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/createuser" className="nav-link">
+                Create User
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/createpage" className="nav-link">
+                Create Page
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <AuthOptions />
+      </nav>
+    );
 }
- 
+
 export default Header;

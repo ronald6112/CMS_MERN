@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import UsersList from "./users-list";
 
@@ -10,6 +10,7 @@ function Home() {
   useEffect(() => {
     if (!userData.user) history.push("/login");
   }, []);
+  
   return (
     <div>
       {/* {userData.user ? (

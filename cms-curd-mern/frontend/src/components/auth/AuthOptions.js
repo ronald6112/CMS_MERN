@@ -23,7 +23,7 @@ function AuthOptions () {
             ) : (
                 <>
                 <button className="btn btn-secondary mr-2" onClick={register}>Sign Up</button>
-                <button className="btn btn-dark mr-2" onClick={login}>Login</button>
+                <button className="btn btn-secondary mr-2" onClick={login}>Login</button>
                 </>
             )}
         </nav>
