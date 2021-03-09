@@ -43,7 +43,7 @@ function CreateUser(props) {
   const createOrEditUser = async () => {
     if (id) {
         axios
-      .get("http://localhost:5000/users/"+ id, {
+      .get("/users/"+ id, {
         headers: { "x-auth-token": userData.token },
       })
       .then((response) => {
@@ -73,11 +73,11 @@ function CreateUser(props) {
         createdBy: userData.user.id,
       };
       if (id) {
-        await axios.post("http://localhost:5000/users/update/" + id, newUser, {
+        await axios.post("/users/update/" + id, newUser, {
           headers: { "x-auth-token": userData.token },
         });
       } else {
-        await axios.post("http://localhost:5000/users/add", newUser, {
+        await axios.post("/users/add", newUser, {
           headers: { "x-auth-token": userData.token },
         });
       }

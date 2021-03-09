@@ -4,24 +4,36 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ErrorNotice from "../misc/errorNotice";
 import UserContext from "../../context/userContext";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
-const Users = (props) => (
-  <tr>
-    <td>{props.user.name}</td>
-    <td>{props.user.emailaddress}</td>
-    <td>{props.user.status ? 'Active' : 'Inactive'}</td>
-    <td>
-      <Link to={"/edituser/" + props.user._id}>edit</Link> |{" "}
-      <a href="javascript:void(0);"
-        onClick={() => {
-          props.deleteUser(props.user._id);
-        }}
-      >
-        delete
-      </a>
-    </td>
-  </tr>
-);
+const Users = (props) => {
+  return (
+    <tr>
+      <td>{props.user.name}</td>
+      <td>{props.user.emailaddress}</td>
+      <td>{props.user.status ? "Active" : "Inactive"}</td>
+      <td>
+        <Link to={"/edituser/" + props.user._id}>edit</Link>
+        {props.user._id !== props.loggedinId ? (
+          <span>
+            &nbsp;|&nbsp;
+            <a
+              href="javascript:void(0);"
+              onClick={() => {
+                props.deleteUser(props.user._id);
+              }}
+            >
+              delete
+            </a>
+          </span>
+        ) : (
+          ""
+        )}
+      </td>
+    </tr>
+  );
+};
 
 function UsersList() {
   const [error, setError] = useState();
@@ -33,16 +45,14 @@ function UsersList() {
   useEffect(() => {
     if (!userData.user) {
       history.push("/login");
+    } else {
+      getUsers();
     }
-else{
-  getUsers();
-}
-    
   }, []);
 
   const getUsers = async () => {
     axios
-      .get("http://localhost:5000/users/", {
+      .get("/users/", {
         headers: { "x-auth-token": userData.token },
       })
       .then((response) => {
@@ -54,27 +64,44 @@ else{
   };
 
   const usersList = () => {
-    return users.map((currentuser,index) => {
+    return users.map((currentuser, index) => {
       return (
         <Users
           user={currentuser}
           deleteUser={deleteUsers}
-          key={currentuser._id}
+          loggedinId={userData.user.id}
         />
       );
     });
   };
 
   const deleteUsers = (id) => {
-    axios
-      .delete("http://localhost:5000/users/" + id, {
-        headers: { "x-auth-token": userData.token },
-      })
-      .then((response) => {
-        setError(response.data);
-      });
+    confirmAlert({
+      title: "Are you sure?",
+      message: "You want to delete this user?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            axios
+              .delete("/users/" + id, {
+                headers: { "x-auth-token": userData.token },
+              })
+              .then((response) => {
+                setError(response.data);
+              });
 
-    setUsers(users.filter((el) => el._id !== id));
+            setUsers(users.filter((el) => el._id !== id));
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            console.log("Click No");
+          },
+        },
+      ],
+    });
   };
 
   return (
@@ -92,11 +119,7 @@ else{
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {users.length > 0
-            ? usersList()
-            : ""}
-        </tbody>
+        <tbody>{users.length > 0 ? usersList() : ""}</tbody>
       </table>
     </div>
   );

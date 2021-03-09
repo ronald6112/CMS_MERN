@@ -19,9 +19,9 @@ function Register() {
 
     try {
       const newUser = { name, emailaddress, password, passwordCheck };
-      await axios.post("http://localhost:5000/users/register", newUser);
+      await axios.post("/users/register", newUser);
       const loginResponse = await axios.post(
-        "http://localhost:5000/users/login",
+        "/users/login",
         {
           emailaddress,
           password,
@@ -70,6 +70,7 @@ function Register() {
           <input
             type="password"
             id="password"
+            autoComplete="new-password"
             className="form-control"
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
@@ -81,6 +82,7 @@ function Register() {
             type="password"
             id="confirmPassword"
             className="form-control"
+            autoComplete="new-password"
             placeholder="Enter Confirm Password"
             onChange={(e) => setPasswordCheck(e.target.value)}
           />

@@ -4,21 +4,22 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ErrorNotice from "../misc/errorNotice";
 import UserContext from "../../context/userContext";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const Pages = (props) => (
   <tr>
     <td>{props.page.title}</td>
     <td>{props.page.content}</td>
-    <td>{props.page.keywords.map((keyword)=>{
-       return (
-        <span className="react-tagsinput-tag">
-          {keyword}
-        </span>
-      );
-    })}</td>
+    <td>
+      {props.page.keywords.map((keyword) => {
+        return <span className="react-tagsinput-tag">{keyword}</span>;
+      })}
+    </td>
     <td>
       <Link to={"/editpage/" + props.page._id}>edit</Link> |{" "}
-      <a href="javascript:void(0);"
+      <a
+        href="javascript:void(0);"
         onClick={() => {
           props.deletePage(props.page._id);
         }}
@@ -37,20 +38,16 @@ function PagesList() {
   const history = useHistory();
 
   useEffect(() => {
-    alert(userData.user)
     if (!userData.user) {
       history.push("/login");
-    }
-    else{
+    } else {
       getPages();
     }
-
-    
   }, []);
 
   const getPages = async () => {
     axios
-      .get("http://localhost:5000/pages/", {
+      .get("/pages/", {
         headers: { "x-auth-token": userData.token },
       })
       .then((response) => {
@@ -74,15 +71,32 @@ function PagesList() {
   };
 
   const deletePages = (id) => {
-    axios
-      .delete("http://localhost:5000/pages/" + id, {
-        headers: { "x-auth-token": userData.token },
-      })
-      .then((response) => {
-        setError(response.data);
-      });
+    confirmAlert({
+      title: "Are you sure?",
+      message: "You want to delete this page?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            axios
+              .delete("/pages/" + id, {
+                headers: { "x-auth-token": userData.token },
+              })
+              .then((response) => {
+                setError(response.data);
+              });
 
-    setPages(pages.filter((el) => el._id !== id));
+            setPages(pages.filter((el) => el._id !== id));
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            console.log("Click No");
+          },
+        },
+      ],
+    });
   };
 
   return (
@@ -100,11 +114,7 @@ function PagesList() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {pages.length > 0
-            ? pagesList()
-            : ""}
-        </tbody>
+        <tbody>{pages.length > 0 ? pagesList() : ""}</tbody>
       </table>
     </div>
   );

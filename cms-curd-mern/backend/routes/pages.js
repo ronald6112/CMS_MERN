@@ -37,8 +37,12 @@ router.post("/add", auth, async (req, res) => {
   });
 
   // validate
-  if (!title) {
+  if (!title ) {
     return res.status(400).json({ msg: "Please enter Title" });
+  }
+
+  if (!content ) {
+    return res.status(400).json({ msg: "Please enter Content" });
   }
 
   newPage
@@ -54,6 +58,10 @@ router.post("/update/:id", auth, async (req, res) => {
   // validate
   if (!title) {
     return res.status(400).json({ msg: "Please enter Title" });
+  }
+
+  if (!content ) {
+    return res.status(400).json({ msg: "Please enter Content" });
   }
   
   Pages.findById(req.params.id)

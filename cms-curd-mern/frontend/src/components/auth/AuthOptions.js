@@ -21,7 +21,7 @@ function AuthOptions() {
   return (
     <div className="auth-options">
       {userData.user ? (
-        <div>
+         <div className="float-right">
           <div className="collpase navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="navbar-item">

@@ -128,7 +128,7 @@ router.post("/add", auth, async (req, res) => {
     } = req.body;
     // validate
     if (!name || !emailaddress || !password || !passwordCheck) {
-      return res.status(400).json({ msg: "Not all fields have been entered." });
+      return res.status(400).json({ msg: "Please enter all fields!" });
     }
     if (password.length < 5) {
       return res
@@ -181,7 +181,7 @@ router.get("/:id", auth, async (req, res) => {
 // Delete
 router.delete("/:id", auth, async (req, res) => {
   try {
-    await Users.findByIdAndDelete(req.user);
+    await Users.findByIdAndDelete(req.params.id);
     res.json('User deleted!')
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -201,7 +201,7 @@ router.post("/update/:id", auth, async (req, res) => {
     } = req.body;
 
     if (!name || !emailaddress || !password || !passwordCheck) {
-      return res.status(400).json({ msg: "Not all fields have been entered." });
+      return res.status(400).json({ msg: "Please enter all fields!" });
     }
     if (password.length < 5) {
       return res

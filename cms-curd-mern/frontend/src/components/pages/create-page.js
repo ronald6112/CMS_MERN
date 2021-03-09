@@ -28,7 +28,7 @@ function CreatePage(props) {
   const createOrEditPage = async () => {
     if (id) {
       axios
-        .get("http://localhost:5000/pages/" + id, {
+        .get("/pages/" + id, {
           headers: { "x-auth-token": userData.token },
         })
         .then((response) => {
@@ -54,11 +54,11 @@ function CreatePage(props) {
         createdBy: userData.user.id,
       };
       if (id) {
-        await axios.post("http://localhost:5000/pages/update/" + id, newPage, {
+        await axios.post("/pages/update/" + id, newPage, {
           headers: { "x-auth-token": userData.token },
         });
       } else {
-        await axios.post("http://localhost:5000/pages/add", newPage, {
+        await axios.post("/pages/add", newPage, {
           headers: { "x-auth-token": userData.token },
         });
       }

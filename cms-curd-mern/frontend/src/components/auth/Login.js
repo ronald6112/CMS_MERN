@@ -17,7 +17,7 @@ function Login() {
     try {
       const loginUser = { emailaddress, password };
       const loginResponse = await axios.post(
-        "http://localhost:5000/users/login",
+        "/users/login",
         loginUser
       );
       setUserData({
