@@ -34,8 +34,10 @@ function UsersList() {
     if (!userData.user) {
       history.push("/login");
     }
-
-    getUsers();
+else{
+  getUsers();
+}
+    
   }, []);
 
   const getUsers = async () => {
@@ -76,8 +78,8 @@ function UsersList() {
   };
 
   return (
-    <div>
-      <h3>User List</h3>
+    <div className="container">
+      <h4>User List</h4>
       {error && (
         <ErrorNotice message={error} clearError={() => setError(undefined)} />
       )}

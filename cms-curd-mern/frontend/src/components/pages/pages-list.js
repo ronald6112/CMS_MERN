@@ -9,7 +9,13 @@ const Pages = (props) => (
   <tr>
     <td>{props.page.title}</td>
     <td>{props.page.content}</td>
-    <td>{props.page.keywords}</td>
+    <td>{props.page.keywords.map((keyword)=>{
+       return (
+        <span className="react-tagsinput-tag">
+          {keyword}
+        </span>
+      );
+    })}</td>
     <td>
       <Link to={"/editpage/" + props.page._id}>edit</Link> |{" "}
       <a href="javascript:void(0);"
@@ -31,11 +37,15 @@ function PagesList() {
   const history = useHistory();
 
   useEffect(() => {
+    alert(userData.user)
     if (!userData.user) {
       history.push("/login");
     }
+    else{
+      getPages();
+    }
 
-    getPages();
+    
   }, []);
 
   const getPages = async () => {
@@ -76,8 +86,8 @@ function PagesList() {
   };
 
   return (
-    <div>
-      <h3>Page List</h3>
+    <div className="container">
+      <h4>Page List</h4>
       {error && (
         <ErrorNotice message={error} clearError={() => setError(undefined)} />
       )}

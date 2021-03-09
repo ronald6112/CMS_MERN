@@ -51,6 +51,7 @@ function App() {
           <Route path="/createuser" component={CreateUser} />
           <Route path="/edituser/:id" component={CreateUser} />
           <Route path="/createpage" component={CreatePage} />
+          <Route path="/editpage/:id" component={CreatePage} />
         </Switch>
         </UserContext.Provider>
     </BrowserRouter>

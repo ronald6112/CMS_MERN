@@ -34,7 +34,10 @@ function CreateUser(props) {
     if (!userData.user) {
       history.push("/login");
     }
-    createOrEditUser();
+    else{
+      createOrEditUser();
+    }
+    
   }, []);
 
   const createOrEditUser = async () => {

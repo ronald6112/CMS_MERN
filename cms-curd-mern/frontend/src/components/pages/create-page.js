@@ -3,12 +3,15 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/userContext";
 import ErrorNotice from "../misc/errorNotice";
+import TagsInput from 'react-tagsinput'
+ 
+import 'react-tagsinput/react-tagsinput.css' // If using WebPack and style-loader.
 
 function CreatePage(props) {
   const [id, setId] = useState(props.match.params.id);
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
-  const [keywords, setKeywords] = useState({});
+  const [keywords, setKeywords] = useState([]);
   const [error, setError] = useState();
   const { userData } = useContext(UserContext);
   const history = useHistory();
@@ -16,7 +19,10 @@ function CreatePage(props) {
     if (!userData.user) {
       history.push("/login");
     }
-    createOrEditPage();
+    else{
+      createOrEditPage();
+    }
+    
   }, []);
 
   const createOrEditPage = async () => {
@@ -40,7 +46,6 @@ function CreatePage(props) {
 
   const submit = async (e) => {
     e.preventDefault();
-
     try {
       const newPage = {
         title,
@@ -63,6 +68,10 @@ function CreatePage(props) {
       err.response.data.msg && setError(err.response.data.msg);
     }
   };
+
+ const handleChange = (keyword) =>{
+    setKeywords(keyword)
+  }
 
   return (
     <div className="container">
@@ -94,6 +103,8 @@ function CreatePage(props) {
         </div>
         <div className="form-group">
           <label>Keywords</label>
+          <TagsInput value={keywords} onChange={handleChange}
+           inputProps={{placeholder: 'Add a keyword'}} />
         </div>
         <button type="submit" className="btn btn-primary cmscolor">
           {id ? "Update" : "Create"}

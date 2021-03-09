@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import UsersList from "./users-list";
+import { Link } from "react-router-dom";
 
 function Home() {
   const { userData } = useContext(UserContext);
@@ -13,16 +14,16 @@ function Home() {
   
   return (
     <div>
-      {/* {userData.user ? (
-                <h1>Welcome {userData.user.displayName}</h1>
+      {userData.user ? (
+                <UsersList />
             ) : (
                 <>
                     <h2>You are not logged in</h2>
                     <Link to="/login">Login</Link>
                 </>
-            )} */}
+            )}
 
-      <UsersList />
+      
     </div>
   );
 }

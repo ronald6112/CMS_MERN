@@ -1,33 +1,64 @@
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
+import { Link } from "react-router-dom";
 
-function AuthOptions () {
-    const { userData, setUserData } = useContext(UserContext);
-    const history = useHistory();
+function AuthOptions() {
+  const { userData, setUserData } = useContext(UserContext);
+  const history = useHistory();
 
-    const register = () => history.push("/register");
-    const login = () => history.push("/login");
-    const logout = () => {
-        setUserData({
-            token: undefined,
-            user: undefined
-        })
-        localStorage.setItem("auth-token","");
-    };
+  const register = () => history.push("/register");
+  const login = () => history.push("/login");
+  const logout = () => {
+    setUserData({
+      token: undefined,
+      user: undefined,
+    });
+    localStorage.setItem("auth-token", "");
+    history.push("/login");
+  };
 
-    return (
-        <nav className="auth-options">
-            {userData.user ? (
-                <button className="btn btn-danger mr-2" onClick={logout}>Logout</button>
-            ) : (
-                <>
-                <button className="btn btn-secondary mr-2" onClick={register}>Sign Up</button>
-                <button className="btn btn-secondary mr-2" onClick={login}>Login</button>
-                </>
-            )}
-        </nav>
-    )
+  return (
+    <div className="auth-options">
+      {userData.user ? (
+        <div>
+          <div className="collpase navbar-collapse">
+            <ul className="navbar-nav mr-auto">
+              <li className="navbar-item">
+                <Link to="/pages" className="nav-link">
+                  Pages
+                </Link>
+              </li>
+              <li className="navbar-item">
+                <Link to="/createuser" className="nav-link">
+                  Create User
+                </Link>
+              </li>
+              <li className="navbar-item">
+                <Link to="/createpage" className="nav-link">
+                  Create Page
+                </Link>
+              </li>
+              <li className="navbar-item">
+                <button className="btn btn-danger mr-2" onClick={logout}>
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <div className="float-right">
+          <button className="btn btn-secondary mr-2" onClick={register}>
+            Sign Up
+          </button>
+          <button className="btn btn-secondary mr-2" onClick={login}>
+            Login
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default AuthOptions;
