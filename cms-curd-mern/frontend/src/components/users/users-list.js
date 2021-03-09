@@ -70,6 +70,7 @@ function UsersList() {
           user={currentuser}
           deleteUser={deleteUsers}
           loggedinId={userData.user.id}
+          key={userData.user.id}
         />
       );
     });
@@ -119,7 +120,7 @@ function UsersList() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>{users.length > 0 ? usersList() : ""}</tbody>
+        <tbody>{users.length > 0 ? usersList() : <tr><td   className="text-center"  colSpan="4">No User found!</td></tr>}</tbody>
       </table>
     </div>
   );

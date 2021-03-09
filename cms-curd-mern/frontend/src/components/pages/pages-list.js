@@ -114,7 +114,7 @@ function PagesList() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>{pages.length > 0 ? pagesList() : ""}</tbody>
+        <tbody>{pages.length > 0 ? pagesList() : <tr><td className="text-center" colSpan="4">No Page found!</td></tr>}</tbody>
       </table>
     </div>
   );

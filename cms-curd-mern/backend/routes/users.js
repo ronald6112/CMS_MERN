@@ -105,7 +105,7 @@ router.post("/tokenIsValid", async (req, res) => {
     if (!verified) {
       return res.json(false);
     }
-    const user = await User.findById(verified.id);
+    const user = await Users.findById(verified.id);
     if (!user) {
       return res.json(false);
     }

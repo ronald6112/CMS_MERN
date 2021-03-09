@@ -2,13 +2,13 @@ import React, {useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import Header from './components/layout/header';
-import Home from './components/pages/home';
+import Home from './components/misc/home';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
 import UserContext from './context/userContext';
 import Pages from './components/pages/pages-list';
 import CreatePage from './components/pages/create-page';
-import CreateUser from './components/pages/create-user';
+import CreateUser from './components/users/create-user';
 import './App.css';
 
 function App() {
@@ -19,12 +19,15 @@ function App() {
 
   useEffect(() => {
     const checkLoggedIn = async () => {
+    
       let token = localStorage.getItem("auth-token");
+      
       if(token === null){
         localStorage.setItem("auth-token", "");
         token = "";
       }
       const tokenResponse = await axios.post('/users/tokenIsValid', null, {headers: {"x-auth-token": token}});
+      
       if (tokenResponse.data) {
         const userRes = await axios.get("/users/", {
           headers: { "x-auth-token": token },
